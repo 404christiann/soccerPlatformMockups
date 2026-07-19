@@ -1,6 +1,6 @@
-# Onzio Prospect Mockup
+# Soccer Platform Mockups
 
-A reusable, club-branded concept preview for Onzio sales outreach. The template demonstrates a public soccer-club website and a shared-state admin experience without a database, authentication, payments, or persistent data.
+A reusable, club-branded concept-preview repository for Onzio sales outreach. The template demonstrates a public soccer-club website and a shared-state admin experience without a database, authentication, payments, or persistent data.
 
 ## Current Lions preview
 
