@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo_Black, Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import type { CSSProperties } from "react";
 import { prospect } from "@/config/prospect";
 import { Providers } from "./providers";
@@ -15,15 +15,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const archivoBlack = Archivo_Black({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: "400",
-});
-
 export const metadata: Metadata = {
-  title: "Meridian United FC — Interactive Concept Preview",
-  description: "A personalized Onzio club website and admin concept for Meridian United FC.",
+  title: "Lions Football Club — Interactive Concept Preview",
+  description: "A personalized Onzio club website and admin concept for Lions Football Club.",
   robots: { index: false, follow: false },
 };
 
@@ -36,7 +30,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} ${archivoBlack.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body
         className="min-h-full"

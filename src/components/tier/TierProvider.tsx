@@ -9,7 +9,12 @@ export function TierProvider({ children }: { children: ReactNode }) {
   const [tier, setTierState] = useState<Tier>("pro");
   useEffect(() => {
     const value = new URLSearchParams(window.location.search).get("tier");
-    if (value === "starter" || value === "pro" || value === "elite") queueMicrotask(() => setTierState(value));
+    if (value === "starter" || value === "pro") queueMicrotask(() => setTierState(value));
+    else if (value) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("tier", "pro");
+      window.history.replaceState({}, "", url);
+    }
   }, []);
   const setTier = (next: Tier) => {
     setTierState(next);

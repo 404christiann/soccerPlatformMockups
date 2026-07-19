@@ -1,2 +1,2 @@
-import { AdminScreen } from "@/components/admin/AdminScreen";
-export default function PlayersPage(){return <AdminScreen kind="players"/>}
+import { redirect } from "next/navigation";
+export default function PlayersPage(){redirect("/admin/roster")}

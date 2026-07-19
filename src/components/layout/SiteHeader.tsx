@@ -3,20 +3,39 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { prospect } from "@/config/prospect";
 import type { FeatureKey } from "@/lib/tiers";
 import { useHasFeature } from "@/components/tier/TierProvider";
 
 const NAV_ITEMS: { href: string; label: string; feature?: FeatureKey }[] = [
-  { href: "/", label: "Home" }, { href: "/roster", label: "Roster" }, { href: "/schedule", label: "Schedule" }, { href: "/staff", label: "Staff" }, { href: "/club", label: "Club" },
-  { href: "/sponsors", label: "Partners", feature: "sponsors" }, { href: "/stats", label: "Stats", feature: "stats" }, { href: "/store", label: "Store", feature: "store" },
+  { href: "/", label: "Home" }, { href: "/roster", label: "Roster" }, { href: "/schedule", label: "Schedule" },
+  { href: "/store", label: "Store", feature: "store" },
 ];
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-  const sponsors = useHasFeature("sponsors"), stats = useHasFeature("stats"), store = useHasFeature("store");
-  const available = (feature?: FeatureKey) => !feature || (feature === "sponsors" ? sponsors : feature === "stats" ? stats : store);
-  return <header className="site-header"><Link className="brand-lockup" href="/" onClick={() => setOpen(false)}><Image src={prospect.branding.crest} alt="" width={52} height={62} priority/><span>{prospect.club.shortName}<small>Tacoma · Washington</small></span></Link><nav className="desktop-nav" aria-label="Main navigation">{NAV_ITEMS.filter((item) => available(item.feature)).map((item) => <Link data-active={pathname === item.href} key={item.href} href={item.href}>{item.label}</Link>)}</nav><div className="header-actions"><Link href="/admin" className="admin-link">Admin preview <span>↗</span></Link><button className="menu-button" onClick={() => setOpen(!open)} aria-expanded={open} aria-label="Toggle navigation"><span/><span/></button></div>{open && <div className="mobile-menu"><div>{NAV_ITEMS.filter((item) => available(item.feature)).map((item, index) => <Link key={item.href} href={item.href} onClick={() => setOpen(false)}><small>0{index + 1}</small>{item.label}</Link>)}</div><Link className="mobile-admin" href="/admin" onClick={() => setOpen(false)}>Open admin preview ↗</Link></div>}</header>;
+  const store = useHasFeature("store");
+  const available = (feature?: FeatureKey) => !feature || store;
+  useLayoutEffect(() => {
+    const updateHeader = () => setScrolled(window.scrollY > (pathname === "/" ? 0 : 24));
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    return () => window.removeEventListener("scroll", updateHeader);
+  }, [pathname]);
+  useLayoutEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
+
+  const isHome = pathname === "/";
+  const brandVisible = !isHome || scrolled;
+  return <header className="site-header" data-home={isHome} data-scrolled={scrolled} data-brand-visible={brandVisible}><Link className="brand-lockup" href="/" aria-label={`${prospect.club.name} home`} onClick={() => setOpen(false)}><Image src={prospect.branding.crest} alt="" width={108} height={107} priority/></Link><nav className="desktop-nav" aria-label="Main navigation">{NAV_ITEMS.filter((item) => available(item.feature)).map((item) => <Link data-active={pathname === item.href} key={item.href} href={item.href}>{item.label}</Link>)}</nav><div className="header-actions"><Link href="/admin" className="admin-link">Admin preview</Link><button className="menu-button" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Close navigation" : "Open navigation"}><span/><span/></button></div>{open && <div className="mobile-menu" id="mobile-navigation"><div>{NAV_ITEMS.filter((item) => available(item.feature)).map((item, index) => <Link key={item.href} href={item.href} onClick={() => setOpen(false)}><small>0{index + 1}</small>{item.label}</Link>)}</div><Link className="mobile-admin" href="/admin" onClick={() => setOpen(false)}>Open admin preview</Link></div>}</header>;
 }

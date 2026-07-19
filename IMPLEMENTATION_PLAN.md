@@ -1,18 +1,65 @@
 # Onzio Prospect Mockup — Implementation Plan
 
 **Repo:** `/Users/christianalcala/Downloads/onzioMockups`
-**Status:** Implemented and verified locally on July 18, 2026. The Next.js application, all public/admin routes, tier gating, shared in-memory interactions, original Meridian assets, and prospect-duplication documentation are complete. GitHub template setup and Vercel deployment remain pending.
+**Status:** Implemented and verified locally through July 19, 2026. The current Lions public/admin preview, Starter/Pro tier gating, shared in-memory interactions, retained Meridian reference config, and prospect-duplication documentation are complete. No Git remote is configured; GitHub template setup and Vercel deployment remain pending.
 
-**What was built:** A static, personalized concept-preview website (public club site + semi-interactive admin preview) for one fictional placeholder club, with a `[ Starter ] [ Pro ] [ Elite ]` version selector, designed so a new prospect can be onboarded by swapping one config module and one image folder. Deployment to Vercel is the remaining release step.
+**Update, 2026-07-18:** The active prospect (`src/config/prospect.ts`) has since been swapped from `meridian` to `lions` (Lions Football Club, Columbus OH) as a real duplication of this template, and the shared design system (typography, spacing, motion) described throughout this plan was reworked into a cleaner, brand-driven visual language. Everything below describes the original Meridian build as implemented — see `CLAUDE.md`'s "Active prospect" section for current state; `meridian/` remains in the repo as the unreferenced reference example this plan describes.
 
-**Verified implementation:** TypeScript, ESLint, and the production build pass across 23 routes. Browser verification covered desktop and 390px mobile layouts, Starter feature suppression, admin-added player visibility on the public roster, recorded-result visibility on the public homepage, and Elite multi-team/advanced-analytics behavior.
+**Current tier update, 2026-07-19:** Elite has been retired. The live implementation and active product documentation now support only Starter and Pro. Any Elite references below are retained solely as historical context for the original Meridian build and are not current requirements.
+
+**Current implementation:** A static, personalized concept-preview website (public club site + semi-interactive admin preview) with a `[ Starter ] [ Pro ]` version selector, designed so a new prospect can be onboarded by swapping one config module and one image folder. Deployment to Vercel is the remaining release step.
+
+**Current verification:** TypeScript, ESLint, and the production build pass across the current 20-route Starter/Pro implementation. The retired multi-team, advanced-analytics, branding, and workflow previews are no longer offered.
+
+## Current Lions implementation delta — July 19, 2026
+
+This section is the current implementation record. The Meridian specification below remains useful historical context, but it does not override these decisions or the agent handoff in `CLAUDE.md`.
+
+### Brand and assets
+
+- The active prospect is Lions Football Club in Columbus, Ohio, with Sea Blue `#1B2958`, Muted Red `#AD3234`, and Ash White `#F0F0F0` supplied through the prospect configuration.
+- The checked-in full-color and white crest variants live at `public/prospect/crest.png` and `public/prospect/crest-white.png`.
+- Five supplied Lions matchday photos were copied into `public/prospect/lions_fc_photos/` while preserving the original `~/Downloads/lions_fc_photos/` source folder. Four are configured through `branding.galleryImages`; the homepage hero image is intentionally excluded so it does not repeat in the slideshow.
+- The 2026 blue, red, and white jersey images were replaced with the supplied club designs, processed into transparent PNGs, and configured in a Pro-only European-club retail runway: blue on light, red on navy, and white on red use the same card width, height, and reveal baseline.
+- The mobile public navigation remains viewport-height both before and after the homepage header enters its scrolled blur state; the panel is anchored beneath the fixed header and locks background scrolling while open.
+- Repeated diagonal `↗` action glyphs were removed across public and admin surfaces; functional slideshow navigation and ordinary directional text links remain.
+
+### Public navigation and homepage
+
+- Interior pages use the solid-white public header immediately, with the full-color crest, blue navigation text, a red active underline, and no bottom divider. The homepage alone uses a transparent header with white controls and no small crest at `scrollY === 0`; any downward scroll transitions it to the same white header and reveals the full-color crest.
+- The header brand is crest-only: the separate Lions FC and Columbus, OH lockup text was removed. The slim navigation is 72px tall on desktop and 64px on mobile, with the crest rendered at 70px and 66px respectively when visible.
+- Public navigation contains Home, Roster, Schedule, and the Pro-gated Store destination. Club, Staff, Partners, and Stats are intentionally absent as standalone navigation tabs.
+- The current Pro Store is a three-jersey first-team collection with a campaign hero, equal product cards, and a responsive detail modal. The Lions scarf, cap, and youth-kit placeholder products have been removed from the active prospect configuration.
+- The landing page now uses a Real Madrid-inspired editorial direction: a supplied first-team captain portrait is the dominant rounded feature card and “Capital City.” / “Roar as One.” remains the primary two-line message on a solid navy stage, with each phrase locked to one line across breakpoints.
+- The hero retains direct Next Match and Meet the Squad actions while intentionally keeping the photograph clean: the former first-team kicker, season marker, crest/division overlay, and Est./League/Home fact tiles are omitted.
+- The Next Match circle treatment and outer metadata rules were removed. The section is shorter on screen, while Date, Kickoff, Venue, and their values are larger.
+- A four-photo Lions matchday slideshow now follows Next Match. It advances every four seconds, pauses for pointer or keyboard interaction, includes arrows and direct slide controls, and suppresses autoplay under `prefers-reduced-motion`. Mobile concentrates a club-navy overlay around the copy rather than darkening the full photograph. Its source paths are prospect-configured through `branding.galleryImages`, exclude the homepage hero asset, and the section omits itself for prospects without gallery media.
+- The “Built here. Ready anywhere.” homepage player rail was removed entirely.
+- The kit section was redesigned toward the editorial quality of the Rose City reference without copying its layout or brand.
+- The final Our identity section is deliberately minimal: a large Columbus-led heading, one concise story block, Founded/Home metadata, an Our story link, and an unnumbered three-principle row. The former colored year card and numbered pillar cards were removed.
+
+### Roster and motion
+
+- `/roster` is the single public people destination. It presents players by position and Technical Staff below them; `/staff` redirects to `/roster#staff` for compatibility.
+- The current Lions roster presentation is intentionally more immersive than the original Meridian grid while opening directly into the squad: a compact right-aligned roster filter with synchronized Framer Motion card rows, club-crest match-poster cards, and a separate editorial staff layout, with no roster hero or introductory marketing copy. The transition respects reduced-motion preferences. Missing player/staff portraits fall back to the configured Lions master crest instead of initials.
+- Starter and Pro retain identical visual quality while preserving the product boundary: Starter cards are static; Pro cards expose hover statistics and accessible player/staff profile modals modeled on the interaction pattern proven in the Rose City reference.
+- The schedule is now a match-only calendar modeled on the Real Madrid page's information architecture rather than its branding: month navigation, an unboxed editorial status-tab row with a red active marker, a compact first-viewport layout, solid-color matchup cards, opponent monograms, animated result changes, and dedicated `/schedule/[fixtureId]` match areas. The borderless season selector remains a Pro capability. The first upcoming card is marked with a direct “Go to next match” action.
+- GSAP and ScrollTrigger drive homepage entrance, restrained parallax, section reveals, card staggers, and footer motion on desktop and mobile.
+- Motion is centralized in `src/components/layout/PublicMotion.tsx`, cleans up between routes and breakpoints, and exits early for `prefers-reduced-motion`.
+
+### Product scope
+
+- Starter and Pro are the only supported versions. Unknown `?tier=` values normalize to Pro.
+- Elite and its multi-team switcher, advanced analytics, Teams, Branding, and Workflows admin surfaces were removed rather than merely hidden.
+- Custom work beyond Pro is scoped separately and is not marketed as another subscription tier.
+- The admin preview now intentionally follows the Rose City admin presentation almost one-for-one at the system level: dark 280px operations sidebar, line icons, red active states, four-card dashboard metrics, action cards, dark CRUD surfaces, and a mobile slide-out navigation drawer. Lions branding, sample data, disclosure, and Starter/Pro capability boundaries remain unchanged.
 
 ---
 
 ## 0. Ground rules for the coding agent
 
 - **This is a sales mockup, not a product.** All data is hard-coded sample data. Nothing persists across a page refresh. See §9 Non-Goals — do not build anything listed there.
-- **Strictly additive tiers.** Elite ⊇ Pro ⊇ Starter. Starter must *actively suppress* sponsor content everywhere, including the footer — not merely "not add" it.
+- **Strictly additive tiers.** Pro ⊇ Starter. Starter must *actively suppress* sponsor content everywhere, including the footer — not merely "not add" it.
 - **The club's identity leads.** The site must read as the fictional club's website, not an Onzio marketing page. The tier selector is visually secondary.
 - **Honesty disclosure.** A persistent, visible "Interactive concept preview — sample content only" notice must exist on both public and admin surfaces.
 - **Do not copy Rose City FC's visual styling.** It is a capability reference only.
@@ -407,7 +454,7 @@ If someone manually visits `/sponsors` while on Starter, the page renders a quie
 - Content: tiny label "Concept version" + three segmented buttons `Starter / Pro / Elite`. Neutral dark surface (not club colors, so it reads as a preview control, not site chrome). No prices, no feature bullets, no checkmarks — the anti-pricing-table requirement.
 - Switching tiers animates affected sections in/out with a short Framer Motion fade (`AnimatePresence`), respecting reduced motion (§7.4).
 - Collapsible to a small icon-only chip so it never dominates the club experience.
-- **Implemented behavior:** the selector starts as a compact `Concept: <Tier>` chip and controls both public and admin surfaces. Switching to Starter immediately reduces admin navigation to Dashboard, Players, Staff, and Schedule/Results. Pro adds Seasons, Statistics, Sponsors, Store, and Analytics. Elite adds Teams, Branding, and Workflows.
+- **Implemented behavior:** the selector starts as a compact `Concept: <Tier>` chip and controls both public and admin surfaces. Switching to Starter immediately reduces admin navigation to Dashboard, Roster, and Schedule/Results. Roster combines Players and Technical Staff with add/edit/remove workflows. Pro adds Seasons, Statistics, Sponsors, Store, and Analytics. Elite adds Teams, Branding, and Workflows.
 - The shared in-memory store remains mounted during client-side navigation and tier changes, so sample edits remain visible across public/admin surfaces until refresh.
 
 ---
@@ -502,7 +549,7 @@ Components (in `src/components/public/`):
 Mobile-first — this is the sales pitch ("update from your phone in seconds"):
 - **Mobile (< md):** sticky top bar (crest, screen title, tier-aware "Add" button) + bottom tab bar (`AdminBottomNav`) with 4–5 primary items; overflow items in a "More" sheet.
 - **Desktop (≥ md):** left sidebar (`AdminSidebar`) with the full nav.
-- Nav items declared once in a `ADMIN_NAV_ITEMS` array with optional `feature: FeatureKey`, filtered via `useHasFeature` (same pattern as public nav): Dashboard, Players, Staff, Schedule → then `seasons`, `stats`, `sponsors`, `store`, `analytics` (Pro) → `teams`, `branding`, `workflows` (Elite).
+- Nav items declared once in a `ADMIN_NAV_ITEMS` array with optional `feature: FeatureKey`, filtered via `useHasFeature` (same pattern as public nav): Dashboard, Roster, Schedule → then `seasons`, `stats`, `sponsors`, `store`, `analytics` (Pro) → `teams`, `branding`, `workflows` (Elite).
 - Visual language: operational, dense-but-clean, neutral surfaces with club-color accents only (avoid the editorial look of the public site).
 - Persistent slim note in the shell: "Admin preview — changes are sample-only and reset on refresh." This is required for honesty (decision #4: nothing persists).
 - No login screen and no fake login. A small "Signed in as Club Admin (preview)" chip in the shell conveys the concept without simulating auth.
@@ -563,8 +610,7 @@ type MockDataAction =
 ### 5.4 Starter admin screens
 
 - `/admin` — **Dashboard**: greeting with club name, quick stats (roster count with `LimitMeter`, next fixture, last result), quick actions (Add Player, Add Fixture, Record Result) that deep-link and open the relevant drawer.
-- `/admin/players` — list via `EntityList`, team filter (Elite), Add/Edit via `PlayerForm` in `AdminDrawer`, remove with confirm. Pro+: form shows extra "Profile" tab fields (bio, stats) behind `TierGate feature="expandedProfiles"`.
-- `/admin/staff` — same pattern with `StaffForm`.
+- `/admin/roster` — canonical tabbed roster workspace. Players and Technical Staff each have list, add, edit, and remove controls backed by the shared mock store. Legacy `/admin/players` and `/admin/staff` routes redirect here.
 - `/admin/schedule` — fixtures list split Upcoming/Played; "Add fixture" (`FixtureForm`); each upcoming row has "Record result" opening `ResultForm` (scores, optional scorers) — submitting flips it to played and the public schedule/home page update immediately.
 
 ### 5.5 Pro admin additions
@@ -615,7 +661,7 @@ Execute strictly in order; each milestone leaves the app runnable (`npm run dev`
 2. **M1 — Types + config + placeholder club.** `src/config/types.ts`, `src/lib/tiers.ts`, full `src/config/clubs/meridian/` dataset (§6), `src/config/prospect.ts`, crest/sponsor/placeholder SVGs in `public/prospect/`.
 3. **M2 — Tier system + mock store + providers.** `TierProvider`, `TierGate`, `useHasFeature`, `MockDataProvider` + reducer + hooks, `ActiveTeamProvider`, `providers.tsx`, `VersionSelector` (functional but unstyled-final), `DisclosureBanner`.
 4. **M3 — Starter public site.** `(public)` layout, `SiteHeader`/`SiteFooter` (feature-filtered nav), Home, `/roster`, `/schedule`, `/staff`, `/club`. Verify on Starter: zero sponsor traces, no stats lines, no store, no player links.
-5. **M4 — Starter admin.** `AdminShell` (mobile bottom nav + desktop sidebar), Dashboard, Players/Staff/Schedule screens, `AdminDrawer` + Player/Staff/Fixture/Result forms wired to the mock store, `LimitMeter`, `ConfirmDialog`. **Verification demo:** add a player in admin → appears on public `/roster`; record a result → home "latest result" updates.
+5. **M4 — Starter admin.** `AdminShell` (mobile bottom nav + desktop sidebar), Dashboard, Roster, and Schedule screens, `AdminDrawer` + Player/Staff/Fixture/Result forms wired to the mock store, `LimitMeter`, `ConfirmDialog`. **Verification demo:** edit a player in admin → the Roster row updates; record a result → home "latest result" updates.
 6. **M5 — Pro public layer.** `/sponsors`, `/stats`, `/store`, `/roster/[playerId]`, `SponsorStrip` + `StoreTeaser` on home, footer sponsor row, `SeasonSelect` on schedule, stat lines on player cards — all via `TierGate`. Verify flipping Starter↔Pro adds/removes everything cleanly.
 7. **M6 — Pro admin layer.** `/admin/seasons`, `/admin/stats`, `/admin/sponsors`, `/admin/store`, `/admin/analytics` (StatTile/TrendChart/PercentBar), Pro fields in `PlayerForm`, gated admin nav items.
 8. **M7 — Elite layer.** `TeamSwitcher` + team-filtered roster/schedule (academy), `/admin/teams`, `/admin/branding`, `/admin/workflows`, advanced-analytics sections. Confirm zero pricing/fee language near academy UI.

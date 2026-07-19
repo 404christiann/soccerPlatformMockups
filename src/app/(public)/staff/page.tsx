@@ -1,2 +1,5 @@
-import { StaffScreen } from "@/components/public/StaffScreen";
-export default function StaffPage() { return <StaffScreen />; }
+import { redirect } from "next/navigation";
+
+export default function StaffPage() {
+  redirect("/roster#staff");
+}

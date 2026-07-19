@@ -2,27 +2,113 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { prospect } from "@/config/prospect";
 import { TierGate } from "@/components/tier/TierGate";
 import { useMockData } from "@/lib/store/MockDataProvider";
 import { useActiveTeam } from "@/components/layout/ActiveTeamProvider";
-import { TeamSwitcher } from "@/components/layout/TeamSwitcher";
-import { FixtureRow } from "./FixtureRow";
-import { PlayerCard } from "./PlayerCard";
+import { MatchdaySlideshow } from "@/components/public/MatchdaySlideshow";
+
+const matchDateFormat = new Intl.DateTimeFormat("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+});
+
+const matchTimeFormat = new Intl.DateTimeFormat("en-US", {
+  hour: "numeric",
+  minute: "2-digit",
+});
+
+function initials(name: string) {
+  return name.split(" ").map((word) => word[0]).join("").slice(0, 3);
+}
 
 export function HomeScreen() {
-  const { players, fixtures, sponsors, products } = useMockData();
+  const { fixtures, sponsors, products } = useMockData();
   const { activeTeamId } = useActiveTeam();
   const teamFixtures = fixtures.filter((fixture) => fixture.teamId === activeTeamId);
   const next = [...teamFixtures].filter((f) => f.status === "upcoming").sort((a,b) => a.date.localeCompare(b.date))[0];
   const latest = [...teamFixtures].filter((f) => f.status === "played").sort((a,b) => b.date.localeCompare(a.date))[0];
+  const featuredKits = products.filter((product) => product.category === "jersey").slice(0, 3);
+
   return <>
-    <section className="hero"><Image src={prospect.branding.heroImage} alt={prospect.branding.heroImageAlt} fill priority sizes="100vw"/><div className="hero-shade"/><div className="pitch-grid"/><div className="hero-content"><motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .65 }}><div className="hero-kicker"><span>Est. {prospect.club.foundedYear}</span><span>{prospect.club.league}</span></div><h1>South Sound.<br/><em>Stand United.</em></h1><p>{prospect.club.tagline}</p><div className="hero-cta"><Link href="/schedule">Next match <span>↗</span></Link><Link href="/roster">Meet the squad</Link></div></motion.div><div className="hero-crest"><Image src={prospect.branding.crest} alt={`${prospect.club.name} crest`} width={220} height={255} priority/><small>Northwest Division<br/>Tacoma, Washington</small></div></div><div className="hero-team"><TeamSwitcher /></div></section>
-    <section className="match-desk"><div className="section-heading"><div><span className="eyebrow">Match desk</span><h2>What’s next.<br/>What just happened.</h2></div><Link href="/schedule">Full schedule →</Link></div><div className="match-grid">{next && <div><span className="card-label">Next up</span><FixtureRow fixture={next} featured/></div>}{latest && <div><span className="card-label">Latest result</span><FixtureRow fixture={latest} featured/></div>}</div></section>
-    <section className="roster-home"><div className="section-heading light"><div><span className="eyebrow">First team</span><h2>Built here.<br/>Ready anywhere.</h2></div><Link href="/roster">Full roster →</Link></div><div className="roster-strip">{players.filter((p) => p.teamId === activeTeamId).slice(0, 6).map((player) => <PlayerCard key={player.id} player={player} compact/>)}</div></section>
-    <section className="club-story"><div className="story-mark">MU</div><div><span className="eyebrow">Since 2014</span><h2>A club shaped by the city around it.</h2><p>{prospect.about.story.split("\n\n")[0]}</p><Link href="/club">Our story →</Link></div><aside>{prospect.about.highlights?.map((highlight) => <p key={highlight}><span>◆</span>{highlight}</p>)}</aside></section>
-    <TierGate feature="sponsors"><section className="partner-home"><span className="eyebrow">Proudly supported by</span><div>{sponsors.map((sponsor) => <Image key={sponsor.id} src={sponsor.logo} alt={sponsor.name} width={190} height={64}/>)}</div><Link href="/sponsors">Meet our partners →</Link></section></TierGate>
-    <TierGate feature="store"><section className="store-home"><div className="section-heading"><div><span className="eyebrow">Club goods</span><h2>Wear the<br/>South Sound.</h2></div><Link href="/store">Visit team store →</Link></div><div className="product-grid home-products">{products.slice(0,3).map((product) => <Link href="/store" key={product.id} className="product-card"><div><Image src={product.image} alt={product.name} fill sizes="(max-width: 700px) 90vw, 30vw"/></div><p><strong>{product.name}</strong><span>${product.price}</span></p></Link>)}</div></section></TierGate>
+    <section className="hero">
+      <div className="hero-content">
+        <div className="hero-copy">
+          <h1><span>Capital City.</span><em>Roar as One.</em></h1>
+          <p className="hero-intro">Columbus-built football, carried by a club that plays for the city and every supporter behind it.</p>
+          <div className="hero-cta"><Link href="/schedule">Next match</Link><Link href="/roster">Meet the squad</Link></div>
+        </div>
+        <div className="hero-media">
+          <Image src={prospect.branding.heroImage} alt={prospect.branding.heroImageAlt} fill preload sizes="(max-width: 800px) 100vw, 52vw"/>
+        </div>
+      </div>
+    </section>
+
+    {next && <section className="match-feature">
+      <header className="match-feature-head"><span className="eyebrow">Next match</span><p>{next.competition}</p></header>
+      <div className="match-stage">
+        <div className="match-side match-club">
+          <Image src={prospect.branding.crest} alt={`${prospect.club.name} crest`} width={220} height={218}/>
+          <strong>{prospect.club.shortName}</strong>
+        </div>
+        <div className="match-center"><span>VS</span><p>{next.homeAway === "home" ? "Home" : "Away"}</p></div>
+        <div className="match-side match-opponent"><span aria-hidden>{initials(next.opponent)}</span><strong>{next.opponent}</strong></div>
+      </div>
+      <div className="match-meta">
+        <p><small>Date</small><strong>{matchDateFormat.format(new Date(next.date))}</strong></p>
+        <p><small>Kickoff</small><strong>{matchTimeFormat.format(new Date(next.date))}</strong></p>
+        <p><small>Venue</small><strong>{next.venue}</strong></p>
+      </div>
+      <footer className="match-feature-foot">
+        {latest?.result && <p><small>Latest result</small><strong>{prospect.club.initials} {latest.result.clubScore}—{latest.result.opponentScore} {initials(latest.opponent)}</strong><span>{latest.opponent}</span></p>}
+        <Link href="/schedule">Full schedule →</Link>
+      </footer>
+    </section>}
+
+    <MatchdaySlideshow />
+
+    <TierGate feature="store"><section className="kit-home">
+      <header className="kit-home-head">
+        <div>
+          <span className="eyebrow">Official collection · 2026</span>
+          <h2>Three colors.<br/><em>One badge.</em></h2>
+        </div>
+        <div className="kit-home-intro">
+          <p>Built in navy, red, and white for every side of matchday. The Capital City collection carries the Lions crest wherever the club goes.</p>
+          <Link href="/store">Shop the collection</Link>
+        </div>
+      </header>
+      <div className="kit-collection" role="list" aria-label="2026 Lions Football Club jerseys">
+        {featuredKits.map((product, index) => <Link href="/store" className="kit-product" data-kit={index + 1} role="listitem" key={product.id}>
+          <div className="kit-product-media"><Image src={product.image} alt={product.name} fill sizes="(max-width: 800px) 82vw, 34vw"/></div>
+          <div className="kit-product-meta">
+            <span><small>Official 2026 jersey</small><strong>{product.name.replace("2026 ", "")}</strong></span>
+            <span className="kit-product-price">${product.price}</span>
+          </div>
+        </Link>)}
+      </div>
+    </section></TierGate>
+
+    <section className="club-story">
+      <header className="story-heading">
+        <span className="eyebrow">Our identity</span>
+        <h2>A club shaped by<br/><em>Columbus.</em></h2>
+      </header>
+      <div className="story-copy">
+        <p>{prospect.about.story.split("\n\n")[0]}</p>
+        <div className="story-meta">
+          <span>Founded <strong>{prospect.club.foundedYear}</strong></span>
+          <span>Home <strong>{prospect.club.venue}</strong></span>
+        </div>
+        <Link href="/club">Our story →</Link>
+      </div>
+      <aside className="story-pillars" aria-label={`What defines ${prospect.club.name}`}>
+        <span className="story-pillars-label">What defines us</span>
+        {prospect.about.highlights?.map((highlight) => <p key={highlight}>{highlight}</p>)}
+      </aside>
+    </section>
+
+    <TierGate feature="sponsors"><section className="partner-home"><span className="eyebrow">Proudly supported by</span><div>{sponsors.map((sponsor) => <span key={sponsor.id} data-level={sponsor.level}>{sponsor.name}</span>)}</div><Link href="/sponsors">Meet our partners →</Link></section></TierGate>
   </>;
 }

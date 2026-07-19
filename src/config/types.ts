@@ -33,6 +33,8 @@ export interface Branding {
   secondaryColor: string;
   accentColor?: string;
   crest: string;
+  /** Optional mono/light crest variant for dark or primary-color surfaces. Falls back to `crest`. */
+  crestOnDark?: string;
   heroImage: string;
   heroImageAlt: string;
   galleryImages?: string[];

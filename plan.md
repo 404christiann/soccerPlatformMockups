@@ -28,9 +28,10 @@ This wording avoids implying that every feature is included in Starter and prese
 
 ## Pricing
 
+Current packaging decision (July 19, 2026): Onzio offers Starter and Pro only. Custom work outside those plans is scoped and quoted separately; it is not presented as a third subscription tier.
+
 - Starter: $65 per month
 - Pro: $99 per month
-- Elite: $119 per month
 - Cancel anytime
 - One standard available custom domain is included
 - Hosting, maintenance, and routine support are included
@@ -123,28 +124,9 @@ Commerce policy:
 - The club receives payments directly and remains responsible for transactions, taxes, refunds, fulfillment, disputes, and payment-provider fees.
 - Onzio should not become the merchant of record.
 
-### Elite - $119 Per Month
-
-Elite is the configurable club operations platform.
-
-Includes everything in Pro, plus:
-
-- Advanced analytics
-- Advanced administrative workflows
-- Custom club operations tools
-- More extensive branding and layout customization
-- Priority support
-- Optional academy workflows
-- Optional tryout and registration workflows
-- Optional ticketing or venue tools
-- Club-specific integrations
-- More complicated multi-team structures when required
-
-Features that create meaningful additional implementation or support work may require a separate quote even when the club is on Elite.
-
 ## Rose City Reference Positioning
 
-The Rose City Futbol Club platform represents a mixture of Pro and Elite.
+The Rose City Futbol Club platform demonstrates the Pro foundation plus custom project work that sits outside the standard subscription.
 
 Pro-level capabilities include:
 
@@ -156,7 +138,7 @@ Pro-level capabilities include:
 - Protected admin portal
 - Expanded player profiles
 
-Elite-level characteristics include:
+Custom project characteristics include:
 
 - Multi-season operations
 - Advanced analytics
@@ -198,14 +180,14 @@ Recommended disclosure:
 The mockup should contain a simple version selector:
 
 ```text
-[ Starter ] [ Pro ] [ Elite ]
+[ Starter ] [ Pro ]
 ```
 
 The selector refers to versions of the proposed club platform. It should not resemble a large SaaS pricing table or interrupt the personalized club experience.
 
 Switching versions changes both the public website and visual admin preview.
 
-The admin navigation adjusts at the same time as the public site. Starter shows only Dashboard, Players, Staff, and Schedule/Results. Pro adds Seasons, Statistics, Sponsors, Store, and Analytics. Elite adds Teams, Branding, and Workflows. If a user manually opens a route outside the selected version, the mockup shows a quiet version-unavailable message and a control to switch versions rather than displaying the gated interface.
+The admin navigation adjusts at the same time as the public site. Starter shows only Dashboard, Players, Staff, and Schedule/Results. Pro adds Seasons, Statistics, Sponsors, Store, and Analytics. If a user manually opens a route outside the selected version, the mockup shows a quiet version-unavailable message and a control to switch versions rather than displaying the gated interface.
 
 ### Starter Preview
 
@@ -232,16 +214,6 @@ Adds:
 - Season controls
 - Staff-facing analytics preview
 
-### Elite Preview
-
-Adds:
-
-- Advanced analytics
-- Multi-team or academy navigation examples
-- Custom operations panels
-- Advanced branding controls
-- Examples of club-specific workflows
-
 ## Mockup Information Architecture
 
 ### Public Experience
@@ -252,17 +224,15 @@ Adds:
 - Schedule and results preview
 - Club story or about section
 - Contact information
-- Pro and Elite only: sponsors and partners
-- Pro and Elite only: statistics and expanded player profiles
-- Pro and Elite only: team store
-- Elite only: optional academy or custom club modules
+- Pro only: sponsors and partners
+- Pro only: statistics and expanded player profiles
+- Pro only: team store
 
 ### Visual Admin Experience
 
 - Mobile-friendly admin shell
 - Starter: players, staff, schedule, and results
 - Pro: Starter tools plus seasons, statistics, sponsors, store, and analytics
-- Elite: Pro tools plus custom workflows, advanced analytics, multi-team controls, and branding options
 
 Admin interactions may open sample screens, drawers, or modals, but no information will be saved.
 
@@ -271,7 +241,7 @@ Admin interactions may open sample screens, drawers, or modals, but no informati
 - The prospect's club identity should lead the experience.
 - Each mockup should look like that club's potential website, not an Onzio pricing page.
 - Use the club's real crest, colors, imagery, and relevant competition context when available.
-- Keep the Starter, Pro, and Elite selector secondary to the club presentation.
+- Keep the Starter and Pro selector secondary to the club presentation.
 - Public pages should feel premium, editorial, and soccer-specific.
 - Admin pages should feel efficient, operational, and credible on a phone.
 - Do not copy Rose City's exact styling.
@@ -292,8 +262,8 @@ Each generated mockup should be driven by a small prospect configuration contain
 - Sample coaching staff
 - Sample fixtures and results
 - Contact details
-- Pro and Elite sponsor examples
-- Pro and Elite store examples
+- Pro sponsor examples
+- Pro store examples
 - Optional academy structure
 
 The goal is to create new prospect mockups quickly without redesigning the application for every club.
@@ -308,7 +278,7 @@ The goal is to create new prospect mockups quickly without redesigning the appli
 4. Limits for included initial staff, fixtures, photos, products, and sponsors
 5. Routine-support boundaries and response expectations
 6. Which payment and external-store providers will be officially supported
-7. Whether heavily customized Elite work receives a separate implementation quote
+7. How custom work outside Starter and Pro should be scoped and quoted
 
 ## Recommended Next Steps
 
@@ -319,8 +289,7 @@ The goal is to create new prospect mockups quickly without redesigning the appli
 5. Create a focused visual direction for the public site and mobile admin preview.
 6. Build the static Starter version first.
 7. Layer the Pro features onto the same template.
-8. Layer the Elite examples onto the same template.
-9. Add the simple Starter/Pro/Elite selector.
-10. Verify desktop, mobile, and reduced-motion behavior.
-11. Deploy the first concept to Vercel.
-12. Use the first prospect response to refine the template before scaling outreach.
+8. Add the simple Starter/Pro selector.
+9. Verify desktop, mobile, and reduced-motion behavior.
+10. Deploy the first concept to Vercel.
+11. Use the first prospect response to refine the template before scaling outreach.

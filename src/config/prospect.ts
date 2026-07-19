@@ -1,2 +1,2 @@
-import { meridian } from "@/config/clubs/meridian";
-export const prospect = meridian;
+import { lions } from "@/config/clubs/lions";
+export const prospect = lions;

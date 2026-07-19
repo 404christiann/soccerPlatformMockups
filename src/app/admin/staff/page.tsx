@@ -1,2 +1,2 @@
-import { AdminScreen } from "@/components/admin/AdminScreen";
-export default function StaffAdminPage(){return <AdminScreen kind="staff"/>}
+import { redirect } from "next/navigation";
+export default function StaffAdminPage(){redirect("/admin/roster")}
