@@ -8,7 +8,7 @@ The active prospect is **Lions Football Club** in Columbus, Ohio. The current pr
 
 - Lions colors and crest assets from `src/config/clubs/lions/` and `public/prospect/`.
 - A slim public header with no gray bottom divider. Interior pages are white immediately; at the untouched top of the homepage it stays transparent with white controls and no small crest, then becomes white and reveals the full-color crest as soon as the visitor scrolls. Its crest-only brand removes the separate club/location text and renders at 70px desktop and 66px mobile.
-- A Real Madrid-inspired, photo-led editorial hero pairing the Lions captain with “Capital City. Roar as One.” and direct schedule/roster actions on a solid club-navy stage, with a completely clean photograph and no informational overlays.
+- A Real Madrid-inspired editorial hero pairing “Capital City. Roar as One.” with direct schedule/roster actions and an oversized Lions crest, optically centered on a continuous navy-to-red club gradient.
 - A compact Next Match presentation with enlarged date, kickoff, and venue details.
 - A four-photo, responsive matchday slideshow directly after Next Match, with four-second autoplay, interaction-aware pausing, arrows and direct controls, a localized mobile text overlay, and reduced-motion support.
 - A Pro-only 2026 kit runway inspired by elite European club stores: a clean editorial introduction followed by three evenly sized solid-color product cards and a swipeable mobile rail.

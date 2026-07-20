@@ -39,8 +39,16 @@ export function HomeScreen() {
           <p className="hero-intro">Columbus-built football, carried by a club that plays for the city and every supporter behind it.</p>
           <div className="hero-cta"><Link href="/schedule">Next match</Link><Link href="/roster">Meet the squad</Link></div>
         </div>
-        <div className="hero-media">
-          <Image src={prospect.branding.heroImage} alt={prospect.branding.heroImageAlt} fill preload sizes="(max-width: 800px) 100vw, 52vw"/>
+        <div className="hero-media" aria-label={`${prospect.club.name} crest`}>
+          <Image
+            className="hero-crest"
+            src={prospect.branding.crest}
+            alt={`${prospect.club.name} crest`}
+            width={720}
+            height={712}
+            preload
+            sizes="(max-width: 800px) 78vw, 42vw"
+          />
         </div>
       </div>
     </section>
