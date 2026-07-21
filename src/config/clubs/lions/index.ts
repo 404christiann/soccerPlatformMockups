@@ -2,6 +2,13 @@ import type { Fixture, Player, Position, ProspectConfig, StaffMember } from "@/c
 
 const LEAGUE = "Midwest Premier League";
 
+// Hosted in the Mockup_DB Supabase project (org: Onzio Mockups), bucket
+// "assets", folder "onzioMockupsAssets" — see supabase-image-loader.js and
+// next.config.ts for why these route through Supabase instead of Vercel's
+// Image Optimization API.
+const ASSET_BASE =
+  "https://ydvggllbrswfchgjhjhr.supabase.co/storage/v1/object/public/assets/onzioMockupsAssets";
+
 const firstTeam: Array<[string, string, number, Position]> = [
   ["Jonah", "Reed", 1, "GK"], ["Mateo", "Silva", 13, "GK"],
   ["Elias", "Ford", 2, "DF"], ["Andre", "Kouyaté", 3, "DF"], ["Noah", "Chen", 4, "DF"], ["Luca", "Bennett", 5, "DF"], ["Darius", "Cole", 15, "DF"], ["Owen", "Park", 22, "DF"],
@@ -41,15 +48,15 @@ export const lions: ProspectConfig = {
     primaryColor: "#1B2958",
     secondaryColor: "#AD3234",
     accentColor: "#F0F0F0",
-    crest: "/prospect/crest.png",
-    crestOnDark: "/prospect/crest-white.png",
-    heroImage: "/prospect/lions_fc_photos/491417483_17927675355024475_5496002634953332765_n.jpg",
+    crest: `${ASSET_BASE}/crest.png`,
+    crestOnDark: `${ASSET_BASE}/crest-white.png`,
+    heroImage: `${ASSET_BASE}/491417483_17927675355024475_5496002634953332765_n.jpg`,
     heroImageAlt: "Lions Football Club captain wearing the navy first-team kit",
     galleryImages: [
-      "/prospect/lions_fc_photos/491499458_17927675328024475_7356353145949999522_n.jpg",
-      "/prospect/lions_fc_photos/490753204_17927675316024475_6690706346505779685_n.jpg",
-      "/prospect/lions_fc_photos/491452867_17927675298024475_4413570856070124753_n.jpg",
-      "/prospect/lions_fc_photos/491413366_17927675394024475_4053105668658067411_n.jpg",
+      `${ASSET_BASE}/491499458_17927675328024475_7356353145949999522_n.jpg`,
+      `${ASSET_BASE}/490753204_17927675316024475_6690706346505779685_n.jpg`,
+      `${ASSET_BASE}/491452867_17927675298024475_4413570856070124753_n.jpg`,
+      `${ASSET_BASE}/491413366_17927675394024475_4053105668658067411_n.jpg`,
     ],
   },
   contact: {
@@ -80,9 +87,9 @@ export const lions: ProspectConfig = {
     { id: "s04", name: "Franklinton Works", logo: "/prospect/sponsors/s04.svg", level: "partner" }, { id: "s05", name: "Columbus Transit Co.", logo: "/prospect/sponsors/s05.svg", level: "partner" }, { id: "s06", name: "Midwest Supply", logo: "/prospect/sponsors/s06.svg", level: "partner" },
   ],
   store: { mode: "internal", products: [
-    { id: "prod01", name: "2026 Blue Jersey", price: 75, image: "/prospect/store/blue-jersey-transparent.png", category: "jersey", sizes: ["S","M","L","XL"] },
-    { id: "prod02", name: "2026 Red Jersey", price: 75, image: "/prospect/store/red-jersey-transparent.png", category: "jersey", sizes: ["S","M","L","XL"] },
-    { id: "prod03", name: "2026 White Jersey", price: 75, image: "/prospect/store/white-jersey-transparent.png", category: "jersey", sizes: ["S","M","L","XL"] },
+    { id: "prod01", name: "2026 Blue Jersey", price: 75, image: `${ASSET_BASE}/blue-jersey-transparent.png`, category: "jersey", sizes: ["S","M","L","XL"] },
+    { id: "prod02", name: "2026 Red Jersey", price: 75, image: `${ASSET_BASE}/red-jersey-transparent.png`, category: "jersey", sizes: ["S","M","L","XL"] },
+    { id: "prod03", name: "2026 White Jersey", price: 75, image: `${ASSET_BASE}/white-jersey-transparent.png`, category: "jersey", sizes: ["S","M","L","XL"] },
   ] },
   analytics: {
     weeklyPageViews: [{weekLabel:"May 25",views:642},{weekLabel:"Jun 1",views:710},{weekLabel:"Jun 8",views:805},{weekLabel:"Jun 15",views:761},{weekLabel:"Jun 22",views:930},{weekLabel:"Jun 29",views:1022},{weekLabel:"Jul 6",views:1168},{weekLabel:"Jul 13",views:1374}],
